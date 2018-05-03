@@ -9,7 +9,8 @@
     "dev_static": "webpack --watch --config ./static/build/webpack.dev.config.js",
     "start_static": "webpack --config ./static/build/webpack.prod.config.js",
     "start_server": "node ./server/app.js",
-    "start": "npm run start_static & npm run start_server"
+    "start": "npm run start_static & npm run start_server",
+    "db": "sudo mongod"
   },
   "author": "chenshenhai",
   "license": "MIT",

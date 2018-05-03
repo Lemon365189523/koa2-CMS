@@ -6,7 +6,7 @@ const koaStatic = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaLogger = require('koa-logger')
 const session = require('koa-session-minimal')
-
+require('./utils/db');
 const config = require('./../config')
 const routers = require('./routers/index')
 

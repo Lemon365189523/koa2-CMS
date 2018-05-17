@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-let uri = 'localhost:27017/LMCMS';
+let uri = 'mongodb://localhost:27017/FWJ-CMS';
 
 
 //链接成功

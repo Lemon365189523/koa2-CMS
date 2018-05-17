@@ -100,7 +100,7 @@ const SignUpForm = Form.create()(React.createClass({
             <Input />
           )}
         </FormItem>
-        <FormItem
+        {/* <FormItem
           {...formItemLayout}
           label="E-mail地址"
           hasFeedback
@@ -114,7 +114,7 @@ const SignUpForm = Form.create()(React.createClass({
           })(
             <Input />
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem
           {...formItemLayout}
           label="密码"
@@ -146,13 +146,13 @@ const SignUpForm = Form.create()(React.createClass({
           )}
         </FormItem>
         
-        <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
+        {/* <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
           {getFieldDecorator('agreement', {
             valuePropName: 'checked',
           })(
             <Checkbox>我已阅读 <a>《xxxx协议》</a></Checkbox>
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" size="large">确定</Button>
         </FormItem>

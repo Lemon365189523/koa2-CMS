@@ -70,7 +70,7 @@ function fetchEvent( options ) {
     // })
 
     return new Promise(( resolve, reject ) => {
-      window.fetch(_url, fetchParams)
+      fetch(_url, fetchParams)
       .then((response) => {
         return response.json();
       }).then( ( result ) => {

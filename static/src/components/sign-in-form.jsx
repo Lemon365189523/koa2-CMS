@@ -12,6 +12,9 @@ const SignInForm = Form.create()(React.createClass({
 
     let values = await this.getFormValues()
     if ( values ) {
+      console.log('====================================');
+      console.log(values);
+      console.log('====================================');
       let result = await signInApi( values )
       if ( result && result.success === true ) {
         message.success( '登录成功！' )

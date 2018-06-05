@@ -23,14 +23,14 @@ const validatorSignUp = ( userInfo ) => {
     message: '',
   }
 
-  if ( /[a-z0-9\_\-]{6,16}/.test(userInfo.userName) === false ) {
-    result.message = '用户名格式为6-16位的小写字母，包括-、_'
-    return result
-  }
-  if ( !validator.isEmail( userInfo.email ) ) {
-    result.message = '请输入正确的邮箱地址'
-    return result
-  }
+  // if ( /[a-z0-9\_\-]{6,16}/.test(userInfo.userName) === false ) {
+  //   result.message = '用户名格式为6-16位的小写字母，包括-、_'
+  //   return result
+  // }
+  // if ( !validator.isEmail( userInfo.email ) ) {
+  //   result.message = '请输入正确的邮箱地址'
+  //   return result
+  // }
   if ( !/[\w+]{6,16}/.test( userInfo.password )  ) {
     result.message = '密码长度应该为6-16'
     return result

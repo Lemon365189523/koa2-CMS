@@ -9,7 +9,6 @@ class AdminCotroller{
       title,
     })
   }
-
 }
 
 module.exports = new AdminCotroller();

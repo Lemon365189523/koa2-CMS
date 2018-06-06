@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const AdminUserSchema = new Schema({
-  name: { type: String, required: true }, // 用户名
+  userName: { type: String, required: true }, // 用户名
   password: { type: String, required: true }, //密码
   createdAt: { type: Date, default: Date.now }, //创建时间
   // updateAt:

@@ -9,8 +9,9 @@ const SignInForm = Form.create()(React.createClass({
   
   async handleSubmit(e) {
     e.preventDefault()
-
+    
     let values = await this.getFormValues()
+    console.log(values)
     if ( values ) {
       console.log('====================================');
       console.log(values);

@@ -46,11 +46,12 @@ class ApiController {
         console.log(ctx.request.body);
         console.log('====================================');
         const { userName , password} = ctx.request.body;
-
-        AdminModel.findOne({
+        
+        await AdminModel.findOne({
            userName
         },(err, user)=>{
             if (user) {
+                console.log('该账号已注册')
                 ctx.body =  {success: false, message : "该账号已注册"}
             }else {
                 console.log('--开始注册--')
@@ -61,9 +62,9 @@ class ApiController {
                 user.save( (err)=> {
    
                     if(err){
-                        ctx.status = 200;
+                        console.log('注册失败')
                         ctx.body = {
-                            success: true,
+                            success: false,
                             message: err.message
                         }
                     }else{
@@ -83,4 +84,4 @@ class ApiController {
 
 }
 
-module.exports = new  ApiController();
+module.exports = new ApiController();

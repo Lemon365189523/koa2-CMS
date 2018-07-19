@@ -68,7 +68,7 @@ function fetchEvent( options ) {
     // .then((response) => {
     //   return response.json();
     // })
-
+    
     return new Promise(( resolve, reject ) => {
       fetch(_url, fetchParams)
       .then((response) => {
@@ -83,7 +83,7 @@ function fetchEvent( options ) {
     })
   }
 }
-
+//请求类
 const request = {
   get( options ) {
     if ( typeof options !== 'object') {

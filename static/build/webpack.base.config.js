@@ -5,7 +5,7 @@ const sourcePath = path.join(__dirname, './static/src');
 const outputPath = path.join(__dirname, './../output/dist/');
 
 module.exports = {
-  
+  //多页面应用
   entry: {
     'admin' : './static/src/pages/admin.js',
     'work' : './static/src/pages/work.js',

@@ -19,7 +19,7 @@ const SignInForm = Form.create()(React.createClass({
       let result = await signInApi( values )
       if ( result && result.success === true ) {
         message.success( '登录成功！' )
-        signInForm( values )
+        // signInForm( values )
       } else if ( result && result.message ){
         message.error( result.message )
       }

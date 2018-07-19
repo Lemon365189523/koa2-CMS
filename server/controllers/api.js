@@ -5,6 +5,7 @@ const moment = require('moment');
 const objectIdToTimestamp = require('objectid-to-timestamp');
 //用于密码加密
 const sha1 = require('sha1');
+const jsonwebtoken = require('jsonwebtoken')
 
 class ApiController {
 
@@ -21,24 +22,29 @@ class ApiController {
         //从请求体中获得参数
 
         const { userName , password} = ctx.request.body;
-        await AdminModel.findOne({
-            userName
-        }, (err , user)=>{
-            if (err) {
-                throw err;
-            }
-            if (!user){
 
-                ctx.body = result;
-            }else{
-                //判断密码是否正确
-                if (password == user.password){
-                    ctx.body = {success: true ,message: '登录成功'}
-                }else{
-                    ctx.body = {success: false, message: '密码错误'}
-                }
+        let user = await AdminModel.findOne({userName});
+        if (!user) {
+            ctx.status = 401
+            ctx.body = {
+              message: '用户名错误',
+              success: false
             }
-        })
+            return
+        }
+
+        //判断密码是否正确
+        if (password == user.password){
+            //登录成功
+            ctx.body = {
+                success: true ,
+                message: '登录成功',
+                token: jsonwebtoken.sign({ userName: userName, password: password }, "jwt_secret")
+            }
+        }else{
+            ctx.body = {success: false, message: '密码错误'}
+        }
+    
     }
     
     async registerAction(ctx){
@@ -47,38 +53,22 @@ class ApiController {
         console.log('====================================');
         const { userName , password} = ctx.request.body;
         
-        await AdminModel.findOne({
-           userName
-        },(err, user)=>{
-            if (user) {
-                console.log('该账号已注册')
-                ctx.body =  {success: false, message : "该账号已注册"}
-            }else {
-                console.log('--开始注册--')
-                let user = new AdminModel({
-                    userName: userName,
-                    password: password,
-                })
-                user.save( (err)=> {
-   
-                    if(err){
-                        console.log('注册失败')
-                        ctx.body = {
-                            success: false,
-                            message: err.message
-                        }
-                    }else{
-                        console.log('注册成功')
-                        ctx.status = 200;
-                        ctx.body = {
-                            success: true,
-                            message: "注册成功"
-                        }
-                    }
-                }) 
-
+        let user = await  AdminModel.findOne({userName})
+        if (user) {
+            ctx.body =  {success: false, message : "该账号已注册"}
+        }else {
+            const newUser = new AdminModel({
+                userName: userName,
+                password: password,
+            })
+            user = await newUser.save()
+            console.log('注册成功')
+            ctx.status = 200;
+            ctx.body = {
+                success: true,
+                message: "注册成功"
             }
-        })
+        }
 
     }
 

@@ -1,26 +1,50 @@
-const path = require('path')
-const Koa = require('koa')
-const convert = require('koa-convert')
-const views = require('koa-views')
-const koaStatic = require('koa-static')
-const bodyParser = require('koa-bodyparser')
+const path = require('path') // 用于处理目录路径
+const Koa = require('koa') // web开发框架
+const convert = require('koa-convert') 
+const views = require('koa-views') 
+const koaStatic = require('koa-static') // 静态资源处理
+const bodyParser = require('koa-bodyparser') // 用于查询字符串解析到`ctx.request.query`
 const koaLogger = require('koa-logger')
-const session = require('koa-session-minimal')
-const config = require('./../config')
-const routers = require('./routers/index')
+const config = require('./../config') //配置文件
+const routers = require('./routers/index') //路由
+const jwt = require('koa-jwt') // 用于路由权限控制
+const jsonwebtoken = require('jsonwebtoken')
 require('./utils/db')
 
 const app = new Koa()
 
-// session存储配置
-const sessionMysqlConfig= {
-  user: config.database.USERNAME,
-  password: config.database.PASSWORD,
-  database: config.database.DATABASE,
-  host: config.database.HOST,
-}
+app.use(jwt({secret:"jwt_secret"})
+  .unless({
+    //数组中的路径不需要通过jwt验证
+    path: [/\/admin/, 
+           /\/api/, 
+           /\/output/, 
+           /\/favicon.ico/
+          ],
+  }))
 
-
+  /* 当token验证异常时候的处理，如token过期、token错误 */
+app.use((ctx, next) => {
+  return next().catch((err) => {
+      if (err.status === 401) {
+          ctx.status = 401;
+          ctx.body = {
+              success: false,
+              message: err.originalError ? err.originalError.message : err.message
+          }
+          console.log('401 code');
+          // const title = 'admin page'
+          // ctx.render('admin', {
+          //   title,
+          // })
+      } else {
+        console.log('====================================');
+        console.log(err);
+        console.log('====================================');
+        throw err;
+      }
+  });
+});
 
 // 配置控制台日志中间件
 app.use(koaLogger())

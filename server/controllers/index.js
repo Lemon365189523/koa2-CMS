@@ -1,5 +1,5 @@
 module.exports = async ( ctx ) => {
-  const title = 'home'
+  const title = '首页'
   await ctx.render('index', {
     title
   })

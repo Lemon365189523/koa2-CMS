@@ -1,6 +1,9 @@
 import 'whatwg-fetch';
 
 function fetchEvent( options ) {
+  console.log('============fetchEvent=============');
+  console.log(options);
+  console.log('====================================');
   if ( !options ) {
     return;
   }
@@ -29,10 +32,15 @@ function fetchEvent( options ) {
     } else {
       _url = `${_url}?${urlParams.join('&')}`
     }
+    let headers = new Headers()
+    // headers.append('Authorization':  'Bearer ' +'dfdfdfdf')
+    console.log('====================================');
+    console.log(headers);
+    console.log('====================================');
     fetchParams = {
       ...fetchParams,
       ...{
-        headers: new Headers()
+        headers: headers
       }
     }
   } else {

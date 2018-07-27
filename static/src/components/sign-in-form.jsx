@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
 import Request from './../utils/request'
 import { signInApi, signInForm } from './../api/sign-in'
+import jwt from 'jsonwebtoken'
 
 const FormItem = Form.Item;
 
@@ -13,13 +14,27 @@ const SignInForm = Form.create()(React.createClass({
     let values = await this.getFormValues()
     console.log(values)
     if ( values ) {
-      console.log('====================================');
-      console.log(values);
-      console.log('====================================');
       let result = await signInApi( values )
+      console.log('====================================');
+      console.log(result);
+      console.log('====================================');
       if ( result && result.success === true ) {
         message.success( '登录成功！' )
         // signInForm( values )
+        //把result.token保存到本地 
+        /** 以后再请求header中添加token
+         *   var DEMO_TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
+    fetch( "http://localhost:3001/api/protected/random-quote", {
+        method:  "GET",
+        headers: {
+            'Authorization':  'Bearer ' + DEMO_TOKEN
+        }
+    })
+         */
+        //保存token
+        localStorage.setItem('lm-token', result.token);
+
+
       } else if ( result && result.message ){
         message.error( result.message )
       }

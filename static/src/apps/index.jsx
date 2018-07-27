@@ -4,6 +4,7 @@ import { Layout, Menu, Breadcrumb } from 'antd'
 import HeadeNav from './../components/header-nav.jsx'
 import FooterCommon from './../components/footer-common.jsx'
 
+
 import 'antd/lib/layout/style/css'
 
 const { Header, Content, Footer } = Layout

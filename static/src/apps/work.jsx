@@ -1,5 +1,10 @@
 import React from 'react'
 import { Layout, Menu, Icon } from 'antd'
+import UserList from '../components/user-list'
+import {
+  Switch,
+  Route
+} from 'react-router'
 const { Header, Sider, Content } = Layout
 
 class Work extends React.Component {
@@ -44,7 +49,7 @@ class Work extends React.Component {
               />
             </Header>
             <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-              Content
+  
             </Content>
           </Layout>
         </Layout>

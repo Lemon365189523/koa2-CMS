@@ -9,42 +9,22 @@ const config = require('./../config') //配置文件
 const routers = require('./routers/index') //路由
 const jwt = require('koa-jwt') // 用于路由权限控制
 const jsonwebtoken = require('jsonwebtoken')
+const errorHandle = require('./middlewares/errorHandle')
 require('./utils/db')
 
 const app = new Koa()
 
-app.use(jwt({secret:"jwt_secret"})
-  .unless({
-    //数组中的路径不需要通过jwt验证
-    path: [/\/admin/, 
-           /\/api/, 
-           /\/output/, 
-           /\/favicon.ico/
-          ],
-  }))
+// app.use(jwt({secret:"jwt_secret"})
+//   .unless({
+//     //数组中的路径不需要通过jwt验证
+//     path: [/\/admin/, 
+//            /\/api/, 
+//            /\/output/, 
+//            /\/favicon.ico/
+//           ],
+//   }))
 
-  /* 当token验证异常时候的处理，如token过期、token错误 */
-app.use((ctx, next) => {
-  return next().catch((err) => {
-      if (err.status === 401) {
-          ctx.status = 401;
-          ctx.body = {
-              success: false,
-              message: err.originalError ? err.originalError.message : err.message
-          }
-          console.log('401 code');
-          // const title = 'admin page'
-          // ctx.render('admin', {
-          //   title,
-          // })
-      } else {
-        console.log('====================================');
-        console.log(err);
-        console.log('====================================');
-        throw err;
-      }
-  });
-});
+app.use(errorHandle);
 
 // 配置控制台日志中间件
 app.use(koaLogger())

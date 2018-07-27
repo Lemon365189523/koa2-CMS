@@ -1,10 +1,11 @@
 
-const AdminModel = require('../models/admin.model');
+const AdminModel = require('../../models/admin.model');
 //下面这两个包用来生成时间
 const moment = require('moment');
 const objectIdToTimestamp = require('objectid-to-timestamp');
 //用于密码加密
 const sha1 = require('sha1');
+//jsonwebtoken用于生成token下发给浏览器
 const jsonwebtoken = require('jsonwebtoken')
 
 class ApiController {
@@ -36,11 +37,22 @@ class ApiController {
         //判断密码是否正确
         if (password == user.password){
             //登录成功
+            let token = jsonwebtoken.sign({
+                data: user,
+                // 设置 token 过期时间
+                exp: Math.floor(Date.now() / 1000) + (60 * 60), // 60 seconds * 60 minutes = 1 hour
+                }, "jwt_secret");
+
             ctx.body = {
                 success: true ,
                 message: '登录成功',
-                token: jsonwebtoken.sign({ userName: userName, password: password }, "jwt_secret")
+                token: token
             }
+            //'Authorization':  'Bearer ' + DEMO_TOKEN
+            console.log('====================================');
+            // console.log(ctx.res);
+            console.log('====================================');
+            // ctx.req.header('Authorization','Bearer '+ token)
         }else{
             ctx.body = {success: false, message: '密码错误'}
         }
@@ -71,6 +83,32 @@ class ApiController {
         }
 
     }
+
+    async getUserInfo(ctx){
+        const { userName } = ctx.request.body;
+        let user = await  AdminModel.findOne({userName})
+        if (!user) {
+            ctx.body = {
+                success: false,
+                message: "没有该账号信息"
+            }
+        }else{
+            ctx.body = {
+                success: true,
+                data: {
+                    userName: user.userName,
+                    createdAt: user.createdAt
+                }
+            }
+        }
+    }
+
+    async getUsers(ctx){
+        const {pageIndex, pageSize} = ctx.request.body
+        let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
+    }
+
+    
 
 }
 

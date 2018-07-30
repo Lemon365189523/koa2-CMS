@@ -6,13 +6,14 @@ const FormItem = Form.Item
 const Option = Select.Option
 
 
-const SignUpForm = Form.create()(React.createClass({
-  
-  getInitialState() {
-    return {
-      passwordDirty: false,
+class SignUpForm extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      passwordDirty: false
     }
-  },
+  }
 
   async handleSubmit(e) {
     e.preventDefault()
@@ -30,7 +31,7 @@ const SignUpForm = Form.create()(React.createClass({
       message.error( '系统繁忙，稍后再试！' )
     }
     
-  },
+  }
 
   getFormValues() {
     let that = this
@@ -43,12 +44,12 @@ const SignUpForm = Form.create()(React.createClass({
         }
       })
     })
-  },
+  }
 
   handlePasswordBlur(e) {
     const value = e.target.value
     this.setState({ passwordDirty: this.state.passwordDirty || !!value })
-  },
+  }
   
   checkPassword(rule, value, callback) {
     const form = this.props.form
@@ -57,7 +58,7 @@ const SignUpForm = Form.create()(React.createClass({
     } else {
       callback()
     }
-  },
+  }
   
   checkConfirm(rule, value, callback) {
     const form = this.props.form
@@ -65,7 +66,7 @@ const SignUpForm = Form.create()(React.createClass({
       form.validateFields(['confirm'], { force: true })
     }
     callback()
-  },
+  }
   
   render() {
     const { getFieldDecorator } = this.props.form
@@ -81,7 +82,7 @@ const SignUpForm = Form.create()(React.createClass({
     }
     
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit.bind(this)}>
         <FormItem
           {...formItemLayout}
           label={(
@@ -124,10 +125,10 @@ const SignUpForm = Form.create()(React.createClass({
             rules: [{
               required: true, message: '请您输入您的账号密码！',
             }, {
-              validator: this.checkConfirm,
+              validator: this.checkConfirm.bind(this),
             }],
           })(
-            <Input type="password" onBlur={this.handlePasswordBlur} />
+            <Input type="password" onBlur={this.handlePasswordBlur.bind(this)} />
           )}
         </FormItem>
         <FormItem
@@ -139,7 +140,7 @@ const SignUpForm = Form.create()(React.createClass({
             rules: [{
               required: true, message: '请您再次输入账号密码进行确认！',
             }, {
-              validator: this.checkPassword,
+              validator: this.checkPassword.bind(this),
             }],
           })(
             <Input type="password" />
@@ -158,9 +159,7 @@ const SignUpForm = Form.create()(React.createClass({
         </FormItem>
       </Form>
     )
-  },
-}))
+  }
+}
 
-
-export default SignUpForm
-
+export default Form.create()(SignUpForm)

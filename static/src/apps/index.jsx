@@ -19,6 +19,7 @@ class App extends React.Component {
             <Breadcrumb.Item>Home</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+            {/* 路由放在这里 */}
             <p>index</p>
           </div>
         </Content>

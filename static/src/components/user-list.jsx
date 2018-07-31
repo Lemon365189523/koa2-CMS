@@ -4,6 +4,7 @@ import {
     Table,
     Icon
 } from 'antd';
+import Request from "../utils/request"
 
 
 class UserList extends Component {
@@ -28,21 +29,26 @@ class UserList extends Component {
         this._getDatas(1,this.state.queryInfo.pageSize);
     }
 
-    _getDatas(page,pageSize){
-        // post('/user',{page:page,pageSize:pageSize},this.props.history).then((responseData)=>{
-        //     console.log(responseData);
-        //     this.setState({
-        //         queryInfo: {
-        //             pageSize :pageSize
-        //         },
-        //         dataSource: {
-        //             count: responseData.count,
-        //             data: responseData.data
-        //         }
-        //     })
-        // }).catch((err)=>{
-        //     console.log(err);
-        // })
+    async _getDatas(page,pageSize){
+        let result = await Request.post({
+            url: '/api/user/getAllUser.json',
+            data: {
+                pageIndex: page,
+                pageSize: pageSize
+            }
+          })
+        console.log('====================================');
+        console.log(result);
+        console.log('====================================');
+        this.setState({
+            queryInfo: {
+                pageSize :pageSize
+            },
+            dataSource: {
+                // count: result.count,
+                data: result.data
+            }
+        })
     }
 
     _tableColumns(){
@@ -52,16 +58,16 @@ class UserList extends Component {
             key: '_id'   //key
             }, {
             title: '用户名',
-            dataIndex: 'name',
-            key: 'name'
+            dataIndex: 'userName',
+            key: 'userName'
             }, {
             title: '密码',
             dataIndex: 'password',
             key: 'password'
             }, {
             title: '注册时间',
-            dataIndex: 'created_at',
-            key: 'created_at'
+            dataIndex: 'createdAt',
+            key: 'createdAt'
             },  {
             title: '操作',
             key: 'operation',
@@ -119,7 +125,7 @@ class UserList extends Component {
                         onChange: this._gotoThispage.bind(this),                                         
                         showTotal: this._showTotalText.bind(this),
 
-                        pageSizeOptions: ['1','2','3']
+                        pageSizeOptions: ['5','10']
                     }}
                     bordered
                 />  

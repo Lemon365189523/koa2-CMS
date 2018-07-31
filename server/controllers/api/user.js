@@ -106,6 +106,17 @@ class ApiController {
     async getUsers(ctx){
         const {pageIndex, pageSize} = ctx.request.body
         let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
+        if (users) {
+            ctx.body = {
+                success : true,
+                data : users
+            }
+        }else{
+            ctx.body = {
+                success : false,
+                message : "没有找到数据"
+            }
+        }
     }
 
     

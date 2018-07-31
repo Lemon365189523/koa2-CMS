@@ -7,8 +7,10 @@ const userController = require('../controllers/api/user');
 
 const routers = router
   .get('/user/getUserInfo.json',userController.getUserInfo )
+  .post('/user/getAllUser.json',userController.getUsers)
   .post('/user/signIn.json',userController.loginAction)
   .post('/user/signUp.json',userController.registerAction )
+
  
   
 module.exports = routers

@@ -23,7 +23,7 @@ class SignUpForm extends React.Component {
       let result = await signUpApi( values )
       if ( result && result.success === true ) {
         message.success( '注册成功！' )
-        // window.location.href = '/admin?signUpSuccess=true'
+        
       } else if ( result && result.message ){
         message.error( result.message )
       }

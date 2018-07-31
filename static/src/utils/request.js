@@ -15,6 +15,10 @@ function fetchEvent( options ) {
   let fetchParams = {
     credentials: 'include',
   };
+  let _token = localStorage.getItem("user-token")
+  console.log('============TOKEN=================');
+  console.log(_token);
+  console.log('====================================');
   if ( _type === 'GET' ) {
     let urlParams = [];
     for ( let key in _data ) {

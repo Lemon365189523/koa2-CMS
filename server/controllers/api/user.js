@@ -48,11 +48,7 @@ class ApiController {
                 message: '登录成功',
                 token: token
             }
-            //'Authorization':  'Bearer ' + DEMO_TOKEN
-            console.log('====================================');
-            // console.log(ctx.res);
-            console.log('====================================');
-            // ctx.req.header('Authorization','Bearer '+ token)
+
         }else{
             ctx.body = {success: false, message: '密码错误'}
         }
@@ -106,10 +102,20 @@ class ApiController {
     async getUsers(ctx){
         const {pageIndex, pageSize} = ctx.request.body
         let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
+        let total = await AdminModel.count()
         if (users) {
+            let list = users.map(user => {
+                var newUser = {}
+                newUser._id = user._id
+                newUser.userName = user.userName
+                newUser.password = user.password
+                newUser.createdAt = user.createdAt.toLocaleString()
+                return newUser
+            })
             ctx.body = {
                 success : true,
-                data : users
+                data : list,
+                total : total
             }
         }else{
             ctx.body = {

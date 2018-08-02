@@ -13,13 +13,15 @@ const errorHandle = require('./middlewares/errorHandle')
 require('./utils/db')
 
 const app = new Koa()
-////user/signIn.json
+
+app.use(errorHandle);
+
 app.use(jwt({secret:"jwt_secret"})
   .unless({
     //数组中的路径不需要通过jwt验证
     path: [/\/admin/, 
-           /\/api\/user\/signIn.json/, 
-           /\/api\/user\/signUp.json/,
+          //  /\/api\/user\/signIn.json/, 
+          //  /\/api\/user\/signUp.json/,
            /\/output/, 
            /\/favicon.ico/,
            /\/work/,
@@ -27,7 +29,6 @@ app.use(jwt({secret:"jwt_secret"})
           ],
   }))
 
-app.use(errorHandle);
 
 // 配置控制台日志中间件
 app.use(koaLogger())

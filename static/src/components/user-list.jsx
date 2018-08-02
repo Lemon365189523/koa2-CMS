@@ -33,7 +33,7 @@ class UserList extends Component {
         let result = await Request.post({
             url: '/api/user/getAllUser.json',
             data: {
-                pageIndex: page,
+                pageIndex: page - 1,
                 pageSize: pageSize
             }
           })
@@ -45,7 +45,7 @@ class UserList extends Component {
                 pageSize :pageSize
             },
             dataSource: {
-                // count: result.count,
+                count: result.total,
                 data: result.data
             }
         })

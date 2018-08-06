@@ -38,7 +38,7 @@ function fetchEvent( options ) {
     }
     let headers = new Headers()
     // headers.append('Authorization':  'Bearer ' +'dfdfdfdf')
-    console.log('====================================');
+    console.log('===========headers==================');
     console.log(headers);
     console.log('====================================');
     fetchParams = {
@@ -51,16 +51,8 @@ function fetchEvent( options ) {
     fetchParams = {
       credentials: 'include',
       method: _type,
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json','Authorization':'Bearer ' + _token},
       body: JSON.stringify(_data)
-    }
-    fetchParams = {
-      ...fetchParams,
-      ...{
-        method: _type,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(_data)
-      }
     }
   }
 

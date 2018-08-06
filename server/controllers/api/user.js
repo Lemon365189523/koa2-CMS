@@ -101,6 +101,15 @@ class ApiController {
 
     async getUsers(ctx){
         const {pageIndex, pageSize} = ctx.request.body
+        const token = ctx.header.authorization  // 获取jwt
+
+        var profile = jsonwebtoken.verify(token,"jwt_secret")
+        if (Date().now() - profile.original_iat > 7 * 24 * 60 * 60 * 1000){
+            console.log("过期")
+        }else{
+            console.log("未过期")
+        }
+
         let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
         let total = await AdminModel.count()
         if (users) {

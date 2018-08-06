@@ -20,8 +20,8 @@ app.use(jwt({secret:"jwt_secret"})
   .unless({
     //数组中的路径不需要通过jwt验证
     path: [/\/admin/, 
-          //  /\/api\/user\/signIn.json/, 
-          //  /\/api\/user\/signUp.json/,
+           /\/api\/user\/signIn.json/, 
+           /\/api\/user\/signUp.json/,
            /\/output/, 
            /\/favicon.ico/,
            /\/work/,

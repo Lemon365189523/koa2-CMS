@@ -51,7 +51,7 @@ function fetchEvent( options ) {
     fetchParams = {
       credentials: 'include',
       method: _type,
-      headers: {'Content-Type': 'application/json','Authorization':'Bearer ' + _token},
+      headers: {'Content-Type': 'application/json','Authorization':_token},
       body: JSON.stringify(_data)
     }
   }

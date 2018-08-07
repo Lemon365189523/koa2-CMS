@@ -102,36 +102,41 @@ class ApiController {
     async getUsers(ctx){
         const {pageIndex, pageSize} = ctx.request.body
         const token = ctx.header.authorization  // 获取jwt
-
-        var profile = jsonwebtoken.verify(token,"jwt_secret")
-        if (Date().now() - profile.original_iat > 7 * 24 * 60 * 60 * 1000){
-            console.log("过期")
-        }else{
-            console.log("未过期")
-        }
-
-        let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
-        let total = await AdminModel.count()
-        if (users) {
-            let list = users.map(user => {
-                var newUser = {}
-                newUser._id = user._id
-                newUser.userName = user.userName
-                newUser.password = user.password
-                newUser.createdAt = user.createdAt.toLocaleString()
-                return newUser
-            })
-            ctx.body = {
-                success : true,
-                data : list,
-                total : total
+        console.log(token)
+        await  jsonwebtoken.verify(token,"jwt_secret",async function(err, decoded){
+            console.log(decoded.exp - Date.now()/1000)
+            if (err == null && decoded.exp - Date.now()/1000 >= 0) {
+                console.log("=====有效token=====")
+                let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
+                let total = await AdminModel.count()
+                if (users) {
+                    let list = users.map(user => {
+                        var newUser = {}
+                        newUser._id = user._id
+                        newUser.userName = user.userName
+                        newUser.password = user.password
+                        newUser.createdAt = user.createdAt.toLocaleString()
+                        return newUser
+                    })
+                    ctx.body = {
+                        success : true,
+                        data : list,
+                        total : total
+                    }
+                }else{
+                    ctx.body = {
+                        success : false,
+                        message : "没有找到数据"
+                    }
+                }
+            }else {
+                console.log("=====无效或过期token=====")
+                //跳去登录
             }
-        }else{
-            ctx.body = {
-                success : false,
-                message : "没有找到数据"
-            }
-        }
+        })
+
+
+
     }
 
     

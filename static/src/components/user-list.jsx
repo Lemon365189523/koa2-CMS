@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
     Pagination,
     Table,
-    Icon
+    Icon,
+    message
 } from 'antd';
 import Request from "../utils/request"
 
@@ -37,18 +38,26 @@ class UserList extends Component {
                 pageSize: pageSize
             }
           })
-        console.log('====================================');
-        console.log(result);
-        console.log('====================================');
-        this.setState({
-            queryInfo: {
-                pageSize :pageSize
-            },
-            dataSource: {
-                count: result.total,
-                data: result.data
-            }
-        })
+        if (result.code == 0) {
+            console.log('====================================');
+            console.log(result);
+            console.log('====================================');
+            this.setState({
+                queryInfo: {
+                    pageSize :pageSize
+                },
+                dataSource: {
+                    count: result.total,
+                    data: result.data
+                }
+            })
+        }else if (result.code == 401){
+            //去登录
+            // this.props.history.push("/admin");
+            message.error("token已过期，需要登录")
+            window.location.href = "/admin"
+        }
+
     }
 
     _tableColumns(){

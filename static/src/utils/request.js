@@ -78,7 +78,13 @@ function fetchEvent( options ) {
       .then((response) => {
         return response.json();
       }).then( ( result ) => {
-        resolve( result )
+        // if (result.code == 401){
+        //   //去登录页
+        //   console.log('去登陆页');
+        //   reject(Error("去登录!"))
+        // }else{
+          resolve( result )
+        // }
       }).catch( ( err ) => {
         reject( err )
       })

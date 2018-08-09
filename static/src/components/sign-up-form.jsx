@@ -23,9 +23,10 @@ class SignUpForm extends React.Component {
       let result = await signUpApi( values )
       if ( result && result.success === true ) {
         message.success( '注册成功！' )
-        
-      } else if ( result && result.message ){
-        message.error( result.message )
+        localStorage.setItem('user-token', result.token);
+        window.location.href = "/work"
+      } else if ( result && result.msg ){
+        message.error( result.msg )
       }
     } else {
       message.error( '系统繁忙，稍后再试！' )

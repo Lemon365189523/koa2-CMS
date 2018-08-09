@@ -13,12 +13,12 @@ class ApiController {
     constructor(){
 
     }
-
+    //code = 0 ,请求成功 code = 1 请求失败
 
     async loginAction(ctx){
         let result = {
             success: false,
-            message: '用户不存在'
+            msg: '用户不存在'
         };
         //从请求体中获得参数
 
@@ -28,8 +28,9 @@ class ApiController {
         if (!user) {
             ctx.status = 401
             ctx.body = {
-              message: '用户名错误',
-              success: false
+                msg: '用户名错误',
+              success: false,
+              code: 1
             }
             return
         }
@@ -45,12 +46,17 @@ class ApiController {
 
             ctx.body = {
                 success: true ,
-                message: '登录成功',
-                token: token
+                msg: '登录成功',
+                token: token,
+                code : 0
             }
 
         }else{
-            ctx.body = {success: false, message: '密码错误'}
+            ctx.body = {
+                success: false, 
+                msg: '密码错误',
+                code : 1
+            }
         }
     
     }
@@ -63,7 +69,11 @@ class ApiController {
         
         let user = await  AdminModel.findOne({userName})
         if (user) {
-            ctx.body =  {success: false, message : "该账号已注册"}
+            ctx.body =  {
+                success: false,
+                msg : "该账号已注册",
+                code : 1
+            }
         }else {
             const newUser = new AdminModel({
                 userName: userName,
@@ -71,10 +81,17 @@ class ApiController {
             })
             user = await newUser.save()
             console.log('注册成功')
+            let token = jsonwebtoken.sign({
+                data: user,
+                // 设置 token 过期时间
+                exp: Math.floor(Date.now() / 1000) + (60 * 60), // 60 seconds * 60 minutes = 1 hour
+                }, "jwt_secret");
             ctx.status = 200;
             ctx.body = {
                 success: true,
-                message: "注册成功"
+                msg: "注册成功",
+                code: 0,
+                token: token
             }
         }
 
@@ -84,12 +101,15 @@ class ApiController {
         const { userName } = ctx.request.body;
         let user = await  AdminModel.findOne({userName})
         if (!user) {
+            ctx.status = 401
             ctx.body = {
                 success: false,
-                message: "没有该账号信息"
+                msg: "没有该账号信息",
+                code : 1
             }
         }else{
             ctx.body = {
+                code : 0,
                 success: true,
                 data: {
                     userName: user.userName,
@@ -104,7 +124,8 @@ class ApiController {
         const token = ctx.header.authorization  // 获取jwt
         console.log(token)
         await  jsonwebtoken.verify(token,"jwt_secret",async function(err, decoded){
-            console.log(decoded.exp - Date.now()/1000)
+            // console.log(decoded.exp - Date.now()/1000)
+            console.log(decoded)
             if (err == null && decoded.exp - Date.now()/1000 >= 0) {
                 console.log("=====有效token=====")
                 let users = await AdminModel.find({}).limit(pageSize).skip(pageIndex).exec()
@@ -118,28 +139,32 @@ class ApiController {
                         newUser.createdAt = user.createdAt.toLocaleString()
                         return newUser
                     })
+                    ctx.status = 200
                     ctx.body = {
                         success : true,
                         data : list,
-                        total : total
+                        total : total,
+                        code: 0
                     }
                 }else{
                     ctx.body = {
                         success : false,
-                        message : "没有找到数据"
+                        msg : "没有找到数据",
+                        code : 1
                     }
                 }
             }else {
                 console.log("=====无效或过期token=====")
                 //跳去登录
+                ctx.status = 401 
+                ctx.body = {
+                    code : 401,
+                    msg : "无效或过期token"
+                }
             }
         })
 
-
-
     }
-
-    
 
 }
 

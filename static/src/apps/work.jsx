@@ -25,15 +25,15 @@ class Work extends React.Component {
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
                 <Icon type="user" />
-                <span className="nav-text">nav 1</span>
+                <span className="nav-text">系统用户</span>
               </Menu.Item>
               <Menu.Item key="2">
                 <Icon type="video-camera" />
-                <span className="nav-text">nav 2</span>
+                <span className="nav-text">app1</span>
               </Menu.Item>
               <Menu.Item key="3">
                 <Icon type="upload" />
-                <span className="nav-text">nav 3</span>
+                <span className="nav-text">app2</span>
               </Menu.Item>
             </Menu>
           </Sider>

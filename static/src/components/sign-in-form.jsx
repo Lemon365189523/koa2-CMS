@@ -34,10 +34,10 @@ class SignInForm extends React.Component{
          */
         //保存token
         localStorage.setItem('user-token', result.token);
+        window.location.href = "/work"
 
-
-      } else if ( result && result.message ){
-        message.error( result.message )
+      } else if ( result && result.msg ){
+        message.error( result.msg )
       }
     } else {
       message.error( '系统繁忙，稍后再试！' )

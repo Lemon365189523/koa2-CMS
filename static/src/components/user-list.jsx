@@ -7,6 +7,7 @@ import {
     Modal
 } from 'antd';
 import Request from "../utils/request"
+import {NavLink , Link} from "react-router-dom"
 
 
 class UserList extends Component {
@@ -86,7 +87,9 @@ class UserList extends Component {
             key: 'operation',
             render: (model) => (  //塞入内容
             <span>
-            　　<a className="edit-data" onClick={this._onClickEdit.bind(this, model)}>编辑</a>
+            {/* 　　<a className="edit-data" onClick={this._onClickEdit.bind(this, model)}>编辑</a> */}
+            <NavLink to="/work/userEdit" exact activeClassName="active">编辑</NavLink>
+
             　　<a className="delete-data" onClick={this._onClickDelete.bind(this , model)}>删除</a>
             </span>
             ),

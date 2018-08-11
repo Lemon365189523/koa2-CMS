@@ -56,8 +56,8 @@ class Work extends React.Component {
               </Button>
             </Header>
             <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-            
-              <UserList />
+              {/* <UserList /> */}
+              {this.props.children}
             </Content>
           </Layout>
         </Layout>

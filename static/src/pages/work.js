@@ -1,18 +1,24 @@
 import React,{Component} from 'react'
 import ReactDOM from 'react-dom'
 import App from './../apps/work.jsx'
-import {Router, Route} from 'react-router'
-import {BrowserRouter} from 'react-router-dom'
+import { Route } from 'react-router'
+import {BrowserRouter, Switch } from 'react-router-dom'
 import UserList from '../components/user-list'
+import UserEdit from '../components/user-edit'
 
 class RouterIndex extends Component {
     render(){
       return(
-          <BrowserRouter>
-            <App path="/work" component={App}>
-                <Route path='/work/userlist' component={UserList}/>
+            <App >
+                <BrowserRouter> 
+                {/* 当一个<Switch>组件被渲染时，react只会渲染Switch下与当前路径匹配的第一个子<Route> */}
+                  <Switch>
+                    <Route exact path='/work' component={UserList}/>
+                    <Route path='/work/userEdit' component={UserEdit}/>
+
+                  </Switch>
+                </BrowserRouter>
             </App>
-          </BrowserRouter>
       )
     }
 }

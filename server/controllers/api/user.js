@@ -84,7 +84,7 @@ class ApiController {
             let token = jsonwebtoken.sign({
                 data: user,
                 // 设置 token 过期时间
-                exp: Math.floor(Date.now() / 1000) + (60 * 60), // 60 seconds * 60 minutes = 1 hour
+                exp: Math.floor(Date.now() / 1000) + (60 * 60) * 24 , // 60 seconds * 60 minutes = 1 hour
                 }, "jwt_secret");
             ctx.status = 200;
             ctx.body = {
@@ -95,6 +95,33 @@ class ApiController {
             }
         }
 
+    }
+    
+
+    async deleteUser(ctx){
+        const {userName} = ctx.request.body
+        
+        let db_data = await AdminModel.remove({userName: userName})
+        console.log(db_data)
+        //失败
+        if (db_data.n == 0){
+            ctx.body = {
+                code : 1,
+                msg : "删除失败",
+                data : ""
+            }
+        }else{
+            ctx.body = {
+                code : 0,
+                msg : "删除成功",
+                data : ""
+            }
+        }
+   
+    }
+
+    async updateUser(ctx){
+        
     }
 
     async getUserInfo(ctx){

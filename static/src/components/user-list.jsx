@@ -3,7 +3,8 @@ import {
     Pagination,
     Table,
     Icon,
-    message
+    message,
+    Modal
 } from 'antd';
 import Request from "../utils/request"
 
@@ -14,13 +15,16 @@ class UserList extends Component {
         super(props);
         this.state = {
             queryInfo : {    //设置最初一页显示多少条
-                　pageSize: 1
+                pageSize: 10
             },     
             dataSource:{    //数据存放
                 count: 0,    //一共几条数据
                 data: [],    //数据
             },
-            loading: false  //Load属性设置
+            loading: false,  //Load属性设置
+            visible: false, //显示model
+            selectModel: {}, //选择的模型
+
         };
         this.tableColumns = [];  //初始定义表头菜单
     }
@@ -82,19 +86,25 @@ class UserList extends Component {
             key: 'operation',
             render: (model) => (  //塞入内容
             <span>
-            　　<a className="edit-data" onClick={this._onClickEdit(model)}>编辑</a>
-            　　<a className="delete-data" onClick={this._onClickDelete(model)}>删除</a>
+            　　<a className="edit-data" onClick={this._onClickEdit.bind(this, model)}>编辑</a>
+            　　<a className="delete-data" onClick={this._onClickDelete.bind(this , model)}>删除</a>
             </span>
             ),
         }]
     }
     //编辑数据
     _onClickEdit(model){
-
+        this.setState({
+            selectModel : model
+        })
     }
     //删除数据 
     _onClickDelete(model){
-
+        console.log(model)
+        this.setState({
+            selectModel : model,
+            visible: true
+        })
     }
 
     _toSelectChange(currentPage, pageSize){
@@ -110,6 +120,35 @@ class UserList extends Component {
 
     _showTotalText(){
         return '共 ' + this.state.dataSource.count + ' 条数据'; 
+    }
+
+    async _handleOk(){
+        let result = await Request.post({
+            url: "api/user/deleteUser.json",
+            data: {
+                userName : this.state.selectModel.userName
+            }
+        })
+
+        if (result.code == 0){
+            message.success(result.msg)
+            await this._getDatas(1,this.state.queryInfo.pageSize);
+            this.setState({
+                visible: false
+            })
+        }else {
+            message.error(result.msg)
+            this.setState({
+                visible: false
+            })
+        }
+
+    }
+
+    _handleCancle(){
+        this.setState({
+            visible: false
+        })
     }
 
 
@@ -138,6 +177,14 @@ class UserList extends Component {
                     }}
                     bordered
                 />  
+                <Modal 
+                    title="删除用户数据"
+                    visible={this.state.visible}
+                    onOk={this._handleOk.bind(this)}
+                    onCancel={this._handleCancle.bind(this)}
+                >
+                    <p>是否删除用户{this.state.selectModel.userName}数据</p>
+                </Modal>
             </div>
         )
     }

@@ -10,7 +10,7 @@ const routers = router
   .post('/user/getAllUser.json',userController.getUsers)
   .post('/user/signIn.json',userController.loginAction)
   .post('/user/signUp.json',userController.registerAction )
-
+  .post('/user/deleteUser.json',userController.deleteUser)
  
   
 module.exports = routers

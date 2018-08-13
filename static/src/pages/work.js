@@ -14,7 +14,7 @@ class RouterIndex extends Component {
                 {/* 当一个<Switch>组件被渲染时，react只会渲染Switch下与当前路径匹配的第一个子<Route> */}
                   <Switch>
                     <Route exact path='/work' component={UserList}/>
-                    <Route path='/work/userEdit' component={UserEdit}/>
+                    <Route path='/work/userEdit/:data' component={UserEdit}/>
 
                   </Switch>
                 </BrowserRouter>

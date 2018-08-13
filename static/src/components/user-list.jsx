@@ -85,14 +85,15 @@ class UserList extends Component {
             },  {
             title: '操作',
             key: 'operation',
-            render: (model) => (  //塞入内容
-            <span>
-            {/* 　　<a className="edit-data" onClick={this._onClickEdit.bind(this, model)}>编辑</a> */}
-            <NavLink to="/work/userEdit" exact activeClassName="active">编辑</NavLink>
+            render: (model) => {
+                let data = JSON.stringify(model)
+                return( 
+                    <span>
+                        <NavLink to={`/work/userEdit/${data}`} exact activeClassName="active">编辑</NavLink>
 
-            　　<a className="delete-data" onClick={this._onClickDelete.bind(this , model)}>删除</a>
-            </span>
-            ),
+                    　　<a className="delete-data" onClick={this._onClickDelete.bind(this , model)}>删除</a>
+                    </span>
+                )},
         }]
     }
     //编辑数据

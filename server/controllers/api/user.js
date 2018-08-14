@@ -121,7 +121,24 @@ class ApiController {
     }
 
     async updateUser(ctx){
+        const {userName , newPassword} = ctx.request.body;
+        console.log(userName);
         
+        let data = await AdminModel.update({userName: userName},{password : newPassword})
+        console.log(data)
+        if (data.n == 0) {
+            ctx.body = {
+                code : 1,
+                msg : "更新用户失败",
+                data : ""
+            }
+        }else {
+            ctx.body = {
+                code : 0,
+                msg : "更新用户成功",
+                data : ""
+            }
+        }
     }
 
     async getUserInfo(ctx){

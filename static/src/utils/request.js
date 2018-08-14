@@ -55,7 +55,7 @@ function fetchEvent( options ) {
       body: JSON.stringify(_data)
     }
   }
-
+  console.log(_url)
   if ( typeof options.success === 'function' && typeof options.error === 'function' ) {
     _success = options.success;
     _error = options.error;

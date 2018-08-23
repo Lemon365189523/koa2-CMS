@@ -36,7 +36,7 @@ class UserEdit extends Component {
             return
         }
         let result = await Request.post({
-            url : "/api/user/updateUser.json",
+            url : "/adminApi/user/updateUser.json",
             data: {
                 userName: userModel.userName,
                 newPassword: newPassword

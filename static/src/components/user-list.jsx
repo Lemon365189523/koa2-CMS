@@ -37,7 +37,7 @@ class UserList extends Component {
 
     async _getDatas(page,pageSize){
         let result = await Request.post({
-            url: '/api/user/getAllUser.json',
+            url: '/adminApi/user/getAllUser.json',
             data: {
                 pageIndex: page - 1,
                 pageSize: pageSize
@@ -128,7 +128,7 @@ class UserList extends Component {
 
     async _handleOk(){
         let result = await Request.post({
-            url: "api/user/deleteUser.json",
+            url: "adminApi/user/deleteUser.json",
             data: {
                 userName : this.state.selectModel.userName
             }

@@ -36,7 +36,7 @@ class Work extends React.Component {
               </Menu.Item>
               <Menu.Item key="2">
                 <Icon type="video-camera" />
-                <span className="nav-text">app1</span>
+                <span className="nav-text">喵日记</span>
               </Menu.Item>
               <Menu.Item key="3">
                 <Icon type="upload" />

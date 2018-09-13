@@ -26,8 +26,8 @@ class ApiController {
             ctx.status = 401
             ctx.body = {
                 msg: '用户名错误',
-              success: false,
-              code: 1
+                success: false,
+                code: 1
             }
             return
         }

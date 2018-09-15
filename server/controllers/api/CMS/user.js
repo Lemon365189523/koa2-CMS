@@ -1,7 +1,6 @@
 
-const AdminModel = require('../../models/admin.model');
-//用于密码加密
-const sha1 = require('sha1');
+const AdminModel = require('../../../models/CMS/admin.model');
+
 //jsonwebtoken用于生成token下发给浏览器
 const jsonwebtoken = require('jsonwebtoken')
 

@@ -3,7 +3,7 @@
  */
 
 const router = require('koa-router')()
-const userController = require('../controllers/api/user');
+const userController = require('../controllers/api/CMS/user');
 
 const routers = router
   .get('/user/getUserInfo.json',userController.getUserInfo )

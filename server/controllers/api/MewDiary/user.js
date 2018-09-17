@@ -6,6 +6,7 @@ const moment = require('moment');
 const objectIdToTimestamp = require('objectid-to-timestamp');
 const tokenTool = require("../../../utils/token")
 const sha1 = require("../../../utils/cryption").sha1
+const path = require("path")
 
 class UserController {
 
@@ -78,6 +79,13 @@ class UserController {
                 }
             }
         }
+    }
+
+    async uploadUserAvatar(ctx){
+        console.log("上传用户头像")
+        console.log(ctx.request.body)
+        let fileReadStream = ctx.request.files[0]
+        console.log(fileReadStream)
     }
     
 }

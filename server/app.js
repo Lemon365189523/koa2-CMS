@@ -4,6 +4,7 @@ const convert = require('koa-convert')
 const views = require('koa-views') 
 const koaStatic = require('koa-static') // 静态资源处理
 const bodyParser = require('koa-bodyparser') // 用于查询字符串解析到`ctx.request.query`
+const koaBody = require('koa-body')
 const koaLogger = require('koa-logger')
 const config = require('./../config') //配置文件
 const routers = require('./routers/index') //路由
@@ -34,7 +35,7 @@ app.use(jwt({secret:"jwt_secret"})
 app.use(koaLogger())
 
 // 配置ctx.body解析中间件
-app.use(bodyParser())
+// app.use(bodyParser())
 
 // 配置静态资源加载中间件
 app.use(koaStatic(
@@ -46,8 +47,12 @@ app.use(views(path.join(__dirname, './views'), {
   extension: 'ejs'
 }))
 
+//koa-body 代替 koa-bodyparser（解析body） 和 koa-multer(上传)
+app.use(koaBody())
+
 // 初始化路由中间件
-app.use(routers.routes()).use(routers.allowedMethods())
+app.use(routers.routes())
+   .use(routers.allowedMethods())
 
 // 监听启动端口
 app.listen( config.port )

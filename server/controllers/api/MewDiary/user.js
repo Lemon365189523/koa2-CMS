@@ -83,9 +83,9 @@ class UserController {
 
     async uploadUserAvatar(ctx){
         console.log("上传用户头像")
-        console.log(ctx.request.body)
-        let fileReadStream = ctx.request.files[0]
-        console.log(fileReadStream)
+        console.log(ctx.request)
+        // let fileReadStream = ctx.request.files[0]
+        // console.log(fileReadStream)
     }
     
 }

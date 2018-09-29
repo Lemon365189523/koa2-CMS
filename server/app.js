@@ -48,7 +48,18 @@ app.use(views(path.join(__dirname, './views'), {
 }))
 
 //koa-body 代替 koa-bodyparser（解析body） 和 koa-multer(上传)
-app.use(koaBody())
+app.use(koaBody({
+  multipart : true,// 支持文件上传
+  formidable:{
+    // uploadDir:path.join(__dirname,'upload-files'), // 设置文件上传目录
+    keepExtensions: true,    // 保持文件的后缀
+    maxFieldsSize:2 * 1024 * 1024, // 文件上传大小
+    onFileBegin:(name,file) => { // 文件上传前的设置
+      // console.log(`name: ${name}`);
+      // console.log(file);
+    }
+  }
+}))
 
 // 初始化路由中间件
 app.use(routers.routes())

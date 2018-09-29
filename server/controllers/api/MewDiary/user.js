@@ -7,6 +7,8 @@ const objectIdToTimestamp = require('objectid-to-timestamp');
 const tokenTool = require("../../../utils/token")
 const sha1 = require("../../../utils/cryption").sha1
 const path = require("path")
+const koaBoy = require("koa-body")
+const fs = require("fs")
 
 class UserController {
 
@@ -83,9 +85,22 @@ class UserController {
 
     async uploadUserAvatar(ctx){
         console.log("上传用户头像")
-        console.log(ctx.request)
-        // let fileReadStream = ctx.request.files[0]
-        // console.log(fileReadStream)
+        //根据移动端定义的key获取上传文件
+        const file = ctx.request.files["user_avatar"]
+        // 创建可写流
+        const reader = fs.createReadStream(file.path)
+        // 图片保存地址
+        let filePath = path.join(__dirname, '../../../upload-files') + `/${file.name}`
+        // 创建可写流
+        const upStream = fs.createWriteStream(filePath)
+        // 可读流通过管道写入可写流
+        let log = reader.pipe(upStream)
+        console.log(log)
+        ctx.status = 200
+        ctx.body = {
+            code : 1,
+            msg : "ddddd"
+        }
     }
     
 }

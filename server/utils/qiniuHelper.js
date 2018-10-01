@@ -8,24 +8,31 @@ var mac = new qiniu.auth.digest.Mac(AccessKey, SecretKey)
 var qiniuCofig = new qiniu.conf.Config();
 //z2 是华南
 qiniuCofig.zone = qiniu.zone.Zone_z2
-const putPolicy = new qiniu.rs.PutPolicy({})
-const uploadToken = putPolicy.uploadToken(mac)
 let bucket = "lemonfan"
+const putPolicy = new qiniu.rs.PutPolicy({
+    scope:  bucket
+})
+const uploadToken = putPolicy.uploadToken(mac)
 
-// function run(fileInfo) {
-//     return new Promise((resolve , reject) => {
-//         //async .waterfall多个函数依次执行，且前一个的输出为后一个的输入
-//         async .waterfall([
-//             function(callback) {
-//                 callback(null, fileInfo);
-//             },
-//             function (fileInfo, callback){
-                
-//             }
-//         ])
-//     })
-// }
+function upToQiniu(filePath, key) {
+    
+    const PutExtra = new qiniu.form_up.PutExtra();
+    const formUploader =  new qiniu.form_up.FormUploader(qiniuCofig);
 
+    return new Promise((resolved, reject) => {
+        formUploader.put(uploadToken, key, filePath, PutExtra, function(respErr, respBody, respInfo){
+            if (respErr){
+                reject(respErr)
+            }else{
+                resolved(respBody)
+            }
+        })
+    })
+}
+
+module.exports = {
+    upToQiniu
+}
 
 
 

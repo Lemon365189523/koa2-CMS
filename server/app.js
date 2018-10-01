@@ -3,7 +3,6 @@ const Koa = require('koa') // web开发框架
 const convert = require('koa-convert') 
 const views = require('koa-views') 
 const koaStatic = require('koa-static') // 静态资源处理
-const bodyParser = require('koa-bodyparser') // 用于查询字符串解析到`ctx.request.query`
 const koaBody = require('koa-body')
 const koaLogger = require('koa-logger')
 const config = require('./../config') //配置文件

@@ -13,6 +13,7 @@ const putPolicy = new qiniu.rs.PutPolicy({
     scope:  bucket
 })
 const uploadToken = putPolicy.uploadToken(mac)
+var bucketManager = new qiniu.rs.BucketManager(mac, qiniuCofig);
 
 function upToQiniu(filePath, key) {
     
@@ -30,8 +31,21 @@ function upToQiniu(filePath, key) {
     })
 }
 
+function removeObject(key){
+    return new Promise((resolved, reject) => {
+        bucketManager.delete(bucket ,key ,function(err, respBody, respInfo) => {
+            if (err){
+                reject(err)
+            }else {
+                resolved(respBody)
+            }
+        })
+    })
+}
+
 module.exports = {
-    upToQiniu
+    upToQiniu,
+    removeObject
 }
 
 

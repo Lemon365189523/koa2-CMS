@@ -11,7 +11,8 @@ const UserSchema = new Schema({
   nickname:{type : String, default: ""},
   phoneNumber:{type : String, default:""},
   sex : {type : Number, default: 0}, //1为男 ，2为女
-  updateAt:{type: Date, default: Date.now}
+  updateAt:{type: Date, default: Date.now},
+
 });
 
 //扩展方法
@@ -24,4 +25,11 @@ const UserSchema = new Schema({
 //静态方法
 // UserSchema.static.findByName = function(name, cb){}
 
-module.exports = mongoose.model('appUser', UserSchema);
+const userModel = mongoose.model('mewDiaryUser', UserSchema);
+
+// UserSchema.pre('save', function(next){
+//   let doc = this;
+//   userModel.findByIdAndUpdate({userId: })
+// })
+
+module.exports = userModel

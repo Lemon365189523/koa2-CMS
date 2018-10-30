@@ -6,5 +6,6 @@ const routers = router
   .post('/login',userController.login)
   .post('/register',userController.register)
   .post('/uploadUserAvatar',userController.uploadUserAvatar)
+  .post('/getSMSCode',userController.sendSMSCode)
 
 module.exports = routers

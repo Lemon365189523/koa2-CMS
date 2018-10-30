@@ -9,17 +9,18 @@ const sha1 = require("../../../utils/cryption").sha1
 const uploadFile = require("../../../utils/upload").uploadFile
 const removeTemImage = require("../../../utils/upload").removeTemImage
 const upToQiniu = require("../../../utils/qiniuHelper").upToQiniu
+const {sendSMS, getRandomCode, queryCode} = require("../../../utils/smsHelper")
 
 class UserController {
 
     async login(ctx){
         console.log("登录喵喵日记")
-        let username = ctx.request.body.username;
+        let phoneNumber = ctx.request.body.phoneNumber;
         console.log(ctx.request.body.password)
     
         let password = sha1(ctx.request.body.password)
 
-        let res = await UserModel.findOne({username})
+        let res = await UserModel.findOne({phoneNumber:phoneNumber})
         if (!res) {
             ctx.status = 200
             ctx.body = {
@@ -29,7 +30,7 @@ class UserController {
             return
         }else if (res.password == password){
             console.log("密码一致")
-            let token = tokenTool.createToken(username)
+            let token = tokenTool.createToken(phoneNumber)
             ctx.status = 200
             ctx.body = {
                 code : 0,
@@ -49,36 +50,83 @@ class UserController {
 
     async register(ctx) {
         console.log("瞄日记:调用注册接口")
-        let username = ctx.request.body.username
+        let phoneNumber = ctx.request.body.phoneNumber
         let password = sha1(ctx.request.body.password)
+        let code = ctx.request.body.smsCode
 
-        let doc = await UserModel.findOne({username})
-
-        if (doc){
-            console.log('用户已经存在')
+        try {
+            let qCode = await queryCode(phoneNumber)
+            console.log("查询的验证码：" + qCode)
+            console.log("用户输入的验证码：" + code)
+            if (qCode == code) {
+                let doc = await UserModel.findOne({phoneNumber: phoneNumber})
+                //判断用户是否注册
+                if (doc){
+                    console.log('用户已经存在')
+                    ctx.status = 200
+                    ctx.body = {
+                        code : 1,
+                        msg : "该用户已注册！"
+                    }
+                }else {
+                    let newUser = UserModel({
+                        phoneNumber: phoneNumber,
+                        password: password
+                    })
+                    let user = await newUser.save()
+                    console.log('注册成功')
+                    console.log(user)
+                    ctx.status = 200
+                    ctx.body = {
+                        code : 0,
+                        data : {
+                            avatar: user.avatar,
+                            nickname: user.nickname,
+                            phoneNumber: user.phoneNumber,
+                            sex: user.sex,
+                            username: user.username
+                        }
+                    }
+                }
+            }else {
+                console.log('验证码错误')
+                ctx.status = 200
+                ctx.body = {
+                    code : 1,
+                    msg : "验证码错误！"
+                }
+            }
+        }catch(error){
+            console.log(error)
             ctx.status = 200
             ctx.body = {
                 code : 1,
-                msg : "该用户已注册！"
+                msg : "服务器出错！"
             }
-        }else {
-            let newUser = UserModel({
-                username: username,
-                password: password
-            })
-            let user = await newUser.save()
-            console.log('注册成功')
-            console.log(user)
+        }
+        
+
+        
+ 
+    }
+
+    async sendSMSCode(ctx){
+        console.log("发送验证码")
+        let phoneNumber = ctx.request.body.phoneNumber
+        let code = getRandomCode()
+        try {
+            let result = await sendSMS( phoneNumber , code , "register")
+            console.log(result)
             ctx.status = 200
             ctx.body = {
-                code : 0,
-                data : {
-                    avatar: user.avatar,
-                    nickname: user.nickname,
-                    phoneNumber: user.phoneNumber,
-                    sex: user.sex,
-                    username: user.username
-                }
+                code: 1,
+                msg : "发送成功"
+            }
+        }catch(e) {
+            ctx.status = 200
+            ctx.body = {
+                code: 0,
+                msg : "发送失败"
             }
         }
     }

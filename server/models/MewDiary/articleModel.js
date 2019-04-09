@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleModel = new Schema({
-    id : {type : String, required: true},
+    id : {type : Number, required: true},
     userId : {type: String},
     contentTypeId : {type: Number},
     createdAt :  { type: Date, default: Date.now }, 
@@ -14,6 +14,7 @@ const ArticleModel = new Schema({
     location : {type : String},
     content : {type : String}
 });
+
 
 const articleModel = mongoose.model('MDArticleModel', ArticleModel)
 
